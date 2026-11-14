@@ -1,0 +1,32 @@
+# Integración continua: comprueba tipos, estilo, pruebas unitarias y que la aplicación compile.
+# No necesita secretos ni base de datos: las pruebas unitarias no se conectan a ningún servicio.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Tipos, estilo y pruebas unitarias
+        run: npm run check
+
+      - name: Compilar
+        run: npm run build

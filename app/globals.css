@@ -1,0 +1,634 @@
+@import "tailwindcss";
+
+/* ---------- Tokens de diseño ----------
+   Fondo blanco, verde «salud» como único color de marca y una paleta semántica
+   (coral = urgente, ámbar = atención, azul = información) que solo se usa para
+   comunicar estados. Todos los pares texto/fondo cumplen WCAG AA (≥ 4.5:1):
+   sobre fondos tintados (brand-50/100) el texto va en brand-700 o más oscuro. */
+@theme {
+  --font-sans: "Atkinson Hyperlegible Next Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Verde salud */
+  --color-brand-50: #eaf8f3;
+  --color-brand-100: #d3f1e6;
+  --color-brand-200: #a9e3ce;
+  --color-brand-300: #74d0b1;
+  --color-brand-400: #34ba93;
+  --color-brand-500: #00a67e;
+  --color-brand-600: #00835f;
+  --color-brand-700: #006b4e;
+  --color-brand-800: #00553f;
+  --color-brand-900: #004232;
+
+  --color-ink: #0d2b33;
+  --color-mist: #f4f9f9;
+  --color-line: #dce7e8;
+
+  /* Neutros con un matiz verde-azulado (sustituyen a los «slate» de Tailwind) */
+  --color-slate-50: #f6fafa;
+  --color-slate-100: #ebf2f3;
+  --color-slate-200: #dbe6e8;
+  --color-slate-300: #c0d0d3;
+  --color-slate-400: #8da3a8;
+  --color-slate-500: #5a7077;
+  --color-slate-600: #465c63;
+  --color-slate-700: #34494f;
+  --color-slate-800: #213840;
+  --color-slate-900: #0d2b33;
+  --color-slate-950: #071c22;
+
+  /* Urgente (coral) */
+  --color-red-50: #fff1ef;
+  --color-red-100: #ffe1dc;
+  --color-red-200: #ffc7be;
+  --color-red-300: #ffa295;
+  --color-red-400: #f77c6b;
+  --color-red-500: #e5503f;
+  --color-red-600: #cf3326;
+  --color-red-700: #b3261e;
+  --color-red-800: #8f1d17;
+  --color-red-900: #701712;
+
+  /* Atención (ámbar) */
+  --color-amber-50: #fff6e5;
+  --color-amber-100: #ffebc7;
+  --color-amber-200: #ffd99a;
+  --color-amber-400: #f2a33a;
+  --color-amber-500: #e08a12;
+  --color-amber-700: #a85f00;
+  --color-amber-800: #8a4b00;
+
+  /* Información (azul) */
+  --color-sky-50: #eef3ff;
+  --color-sky-100: #dce7ff;
+  --color-sky-200: #c5d6ff;
+  --color-sky-500: #2e6bff;
+  --color-sky-700: #1b4fd0;
+
+  /* Colores de cápsula (solo ilustraciones) */
+  --color-capsule-blue: #2e6bff;
+  --color-capsule-violet: #7a5af8;
+  --color-capsule-coral: #ff6b57;
+  --color-capsule-amber: #f2a33a;
+  --color-capsule-green: #00a67e;
+
+  --animate-caret: caret 1.05s steps(1) infinite;
+  --animate-rise: rise 0.22s ease-out both;
+  --animate-fade: fade 0.18s ease-out both;
+  --animate-drawer: drawer 0.24s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-sheet: sheet 0.26s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes drawer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes sheet {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes capfill {
+  0% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  65% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  85% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+  100% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+}
+/* Las cápsulas del blíster caen una vez al cargar la portada */
+@keyframes drop {
+  from {
+    opacity: 0;
+    transform: translateY(-26px) rotate(-8deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(3px) rotate(1deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* ---------- Base ---------- */
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+    background: #fff;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    background: #fff;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "calt", "kern";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--color-brand-100);
+  }
+  button,
+  [role="button"],
+  summary {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 2px;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* Tamaño de texto del chat (lo elige la persona y se guarda en este navegador) */
+:root {
+  --chat-fs: 1rem;
+}
+html[data-text="lg"] {
+  --chat-fs: 1.125rem;
+}
+html[data-text="xl"] {
+  --chat-fs: 1.3125rem;
+}
+
+.skip-link {
+  position: fixed;
+  left: 12px;
+  top: -64px;
+  z-index: 100;
+  border-radius: 12px;
+  background: var(--color-ink);
+  color: #fff;
+  padding: 10px 16px;
+  font-weight: 600;
+  transition: top 0.15s;
+}
+.skip-link:focus {
+  top: 12px;
+}
+
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #c0d0d3 transparent;
+}
+
+/* Indicador «escribiendo»: una cápsula que se llena */
+.typing-capsule {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 18px;
+  border: 2px solid var(--color-brand-600);
+  border-radius: 9999px;
+  background: #fff;
+  overflow: hidden;
+  vertical-align: middle;
+}
+.typing-capsule::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-brand-400);
+  transform-origin: left center;
+  animation: capfill 1.7s ease-in-out infinite;
+}
+.typing-capsule::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--color-brand-600);
+}
+
+/* ---------- Markdown de las respuestas ---------- */
+.md {
+  font-size: var(--chat-fs);
+  line-height: 1.7;
+  color: var(--color-ink);
+  overflow-wrap: anywhere;
+}
+.md > * + * {
+  margin-top: 0.85em;
+}
+.md h1,
+.md h2,
+.md h3,
+.md h4 {
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.012em;
+  margin-top: 1.5em;
+}
+.md h1 {
+  font-size: 1.3em;
+}
+.md h2 {
+  font-size: 1.18em;
+}
+.md h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  font-size: 1.04em;
+  color: var(--color-brand-700);
+}
+/* Cada apartado empieza con una cápsula bicolor, como en un prospecto */
+.md h3::before {
+  content: "";
+  flex: none;
+  width: 1.15em;
+  height: 0.55em;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, var(--color-brand-600) 50%, var(--color-brand-200) 50%);
+}
+.md h4 {
+  font-size: 1em;
+}
+.md > h3:first-child {
+  margin-top: 0;
+}
+.md strong {
+  font-weight: 700;
+}
+.md ul,
+.md ol {
+  padding-left: 1.45em;
+}
+.md ul {
+  list-style: disc;
+}
+.md ol {
+  list-style: decimal;
+}
+.md li + li {
+  margin-top: 0.3em;
+}
+.md li > ul,
+.md li > ol {
+  margin-top: 0.3em;
+}
+.md li::marker {
+  color: var(--color-brand-500);
+}
+.md a {
+  color: var(--color-brand-700);
+  text-decoration: underline;
+  text-decoration-color: var(--color-brand-300);
+  text-underline-offset: 3px;
+}
+.md a:hover {
+  text-decoration-color: var(--color-brand-600);
+}
+.md blockquote {
+  border-left: 3px solid var(--color-line);
+  padding-left: 1em;
+  color: var(--color-slate-600);
+}
+.md hr {
+  border: 0;
+  border-top: 1px solid var(--color-line);
+  margin: 1.4em 0;
+}
+.md :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--color-mist);
+  border: 1px solid var(--color-line);
+  border-radius: 6px;
+  padding: 0.1em 0.38em;
+}
+.md .table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+}
+.md table {
+  border-collapse: collapse;
+  font-size: 0.93em;
+  width: max-content;
+  min-width: 100%;
+}
+.md th,
+.md td {
+  border-bottom: 1px solid var(--color-line);
+  padding: 0.55em 0.85em;
+  text-align: left;
+  vertical-align: top;
+}
+.md tr:last-child td {
+  border-bottom: 0;
+}
+.md th {
+  background: var(--color-mist);
+  font-weight: 700;
+}
+
+/* Avisos dentro de la respuesta: > **Atención:** … / **Urgente:** / **Consejo:** / **Importante:** */
+.md .callout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 0.7em;
+  border: 1px solid;
+  border-radius: 14px;
+  padding: 0.8em 1em;
+  font-size: 0.96em;
+  line-height: 1.6;
+  color: var(--color-ink);
+}
+.md .callout > svg {
+  margin-top: 0.28em;
+  flex: none;
+}
+.md .callout > div > * + * {
+  margin-top: 0.5em;
+}
+.md .callout-title {
+  display: block;
+  font-weight: 700;
+}
+.md .callout-warn {
+  background: var(--color-amber-50);
+  border-color: var(--color-amber-200);
+}
+.md .callout-warn .callout-title,
+.md .callout-warn > svg {
+  color: var(--color-amber-800);
+}
+.md .callout-urgent {
+  background: var(--color-red-50);
+  border-color: var(--color-red-200);
+}
+.md .callout-urgent .callout-title,
+.md .callout-urgent > svg {
+  color: var(--color-red-700);
+}
+.md .callout-tip {
+  background: var(--color-brand-50);
+  border-color: var(--color-brand-200);
+}
+.md .callout-tip .callout-title,
+.md .callout-tip > svg {
+  color: var(--color-brand-700);
+}
+.md .callout-info {
+  background: var(--color-sky-50);
+  border-color: var(--color-sky-200);
+}
+.md .callout-info .callout-title,
+.md .callout-info > svg {
+  color: var(--color-sky-700);
+}
+
+/* Cursor parpadeante al final del texto que se está generando (no dentro de un aviso) */
+.md.is-streaming > .callout:last-child::after {
+  display: none;
+}
+.md.is-streaming > :last-child:not(.callout)::after {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 1.1em;
+  margin-left: 3px;
+  vertical-align: text-bottom;
+  border-radius: 1px;
+  background: var(--color-brand-600);
+  animation: caret 1.05s steps(1) infinite;
+}
+
+/* Bloques de código */
+.code-block {
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fbfdfd;
+}
+.code-block-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 6px 4px 14px;
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-mist);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-slate-500);
+}
+.code-block pre {
+  margin: 0;
+  padding: 14px 16px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.65;
+  tab-size: 2;
+}
+.code-block code {
+  font-family: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* Resaltado de sintaxis (tema claro) */
+.hljs {
+  color: #24292f;
+}
+.hljs-comment,
+.hljs-quote {
+  color: #6e7781;
+  font-style: italic;
+}
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-doctag,
+.hljs-template-tag,
+.hljs-type {
+  color: #cf222e;
+}
+.hljs-string,
+.hljs-regexp,
+.hljs-meta .hljs-string {
+  color: #0a3069;
+}
+.hljs-number,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-attr,
+.hljs-attribute,
+.hljs-variable.constant_ {
+  color: #0550ae;
+}
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.function_,
+.hljs-section {
+  color: #8250df;
+}
+.hljs-built_in,
+.hljs-params {
+  color: #953800;
+}
+.hljs-name,
+.hljs-tag,
+.hljs-selector-class,
+.hljs-selector-id {
+  color: #116329;
+}
+.hljs-variable,
+.hljs-template-variable,
+.hljs-property {
+  color: #24292f;
+}
+.hljs-meta {
+  color: #6e7781;
+}
+.hljs-addition {
+  color: #116329;
+  background: #dafbe1;
+}
+.hljs-deletion {
+  color: #82071e;
+  background: #ffebe9;
+}
+.hljs-emphasis {
+  font-style: italic;
+}
+.hljs-strong {
+  font-weight: 700;
+}
+
+/* ---------- Blíster de la portada ---------- */
+.blister-cap {
+  animation: drop 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+  animation-delay: calc(var(--i, 0) * 80ms + 150ms);
+  cursor: pointer;
+  outline: none;
+}
+.cap-lift {
+  transition: transform 0.22s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+.blister-cap:hover .cap-lift {
+  transform: translateY(-3px);
+}
+.blister-cap[aria-pressed="true"] .cap-lift {
+  transform: translateY(-11px);
+}
+.cap-shadow {
+  transition:
+    opacity 0.22s,
+    transform 0.22s;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.blister-cap[aria-pressed="true"] .cap-shadow {
+  opacity: 0.07;
+  transform: scale(0.82);
+}
+.blister-ring {
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.blister-cap:focus-visible .blister-ring {
+  opacity: 1;
+}
+
+/* ---------- Impresión (pastillero semanal) ---------- */
+@media print {
+  @page {
+    margin: 14mm;
+  }
+  html,
+  body {
+    background: #fff !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .print-sheet {
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+}
+.print-only {
+  display: none;
+}
+
+/* ---------- Accesibilidad ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
