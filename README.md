@@ -8,16 +8,17 @@ Aplicación web **full stack** tipo chat con un **asistente de inteligencia arti
 
 ## Integrantes
 
-| Integrante | Aporte |
-|---|---|
-| Julián De Jesús Tobón Botero | _(completar)_ |
-| _(Integrante 2)_ | _(completar)_ |
-| _(Integrante 3)_ | _(completar)_ |
+| Integrante | 
+|---|
+| Julián De Jesús Tobón Botero |
+| Bryan David Molina Dominguez |
+| Brayan Jaraba |
 
 - **Docente:** Juan Pablo Arango · **Asignatura:** Ingeniería Web
 - **Entrega:** domingo 29 de noviembre de 2026, 11:59 p. m.
-- **Repositorio:** _(URL de GitHub; dar acceso al docente)_
-- **Aplicación desplegada:** _(URL pública de Vercel)_
+- **Repositorio:** https://github.com/202602-Ingeniria-Web-Udea/Black-Boys-ai-expert-chat.git
+- **Aplicación desplegada:** https://black-boys-ai-expert-chat.vercel.app/
+- **Credenciales Email: admin@example.com Contraseña: 12345678
 
 ## Contenido
 
