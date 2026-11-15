@@ -17,7 +17,7 @@ Aplicación web **full stack** tipo chat con un **asistente de inteligencia arti
 - **Docente:** Juan Pablo Arango · **Asignatura:** Ingeniería Web
 - **Entrega:** domingo 29 de noviembre de 2026, 11:59 p. m.
 - **Repositorio:** https://github.com/202602-Ingeniria-Web-Udea/Black-Boys-ai-expert-chat.git
-- **Aplicación desplegada:** https://black-boys-ai-expert-chat.vercel.app/
+- **Aplicación desplegada:** https://black-boys-ai-expert-chat.vercel.app
 - **Credenciales Email: admin@example.com Contraseña: 12345678
 
 ## Contenido
